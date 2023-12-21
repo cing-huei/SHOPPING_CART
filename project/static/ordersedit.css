@@ -1,0 +1,31 @@
+h1, h4{
+    text-align: center;
+    color: white;
+    width: auto;
+}
+#tabletop
+{
+    background-color: #e9ecef;
+    font-weight: bold;
+    text-align: center;
+}
+table{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+table, th ,td{
+    border: 1px solid;
+    border-collapse: collapse;
+}
+.custom-margin {
+    margin-right: 10px; /* 根據需求調整間距大小*/
+}
+span
+{
+    color: red;
+}
+.navbar
+{
+    background-color: #87CEFA;
+}

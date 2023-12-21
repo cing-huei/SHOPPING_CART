@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>訂單通知信</title>
+	<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .letterhead {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+			padding-left: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Add the lined paper effect */
+        .lined-paper {
+            margin-top: 50px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        .section {
+            margin: 20px 0;
+        }
+		.section1
+		{
+			margin: 50px 0;
+		}
+		.congratulation
+		{
+			color: red;
+			font-weight: bolder;
+		}
+		#content
+		{
+			padding-left: 20px;
+		}
+    </style>
+</head>
+<body>
+	<div class="letterhead">
+        <h2>Encounter U 服飾會員</h2>
+        <h2>訂單通知信</h2>
+    </div>
+    <div class="content lined-paper">
+        <div class="section">
+            <p class="congratulation">感謝{{ username }}貴賓的光臨，您已經成功的完成訂購程序。</p>
+        </div>
+        <hr>
+		<div class="section" id="content">
+            <p>我們將儘快把您選購的商品郵寄給您！ 再次感謝您支持</p>
+            <hr>
+            <p>您的訂單編號為：{{ orderid }}<p>
+            <hr>
+            <p>您可以使用訂單編號點選以下訂單查詢連結查詢訂單的詳細內容。</p>
+        </div>
+        <hr>
+        <div class="section">
+            <a href="http://192.168.58.214:8080/cartordercheck/">訂單查詢</a>
+        </div>
+        <hr>
+        <div class="section1"><hr></div>
+        <div class="section1"><hr></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品資訊</title>
+    <link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './productcontent.css' %}">
+    
+</head>    
+<body>
+    <nav class="navbar navbar-light bg-rgb(255, 255, 235) navbar-expand-md" id="top-1">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-end align-items-center d-md-inline d-none"></div>
+            <div class="d-flex justify-content-center align-items-center">
+                <p id="cart_text" class="d-md-inline">
+                    <div id="top-2">
+                        {% if user_id %}
+                            <div>
+                                <a href="{% url 'logout' %}" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" /> {{ user.Username }} / 登出
+                                </a>
+                            </div>
+                        {% else %}
+                            <div>
+                                <a href="{% url 'login' %}" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" /> 登入/註冊
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div id="cart_container" style="margin-left: 10px;"> 
+                    {% comment %} Add margin to create space between elements  {% endcomment %}
+                    {% if user_id %}
+                        <a href="/cart/">
+                            <img src="{% static '/images/car.png' %}" id="cart" />
+                        </a>
+                        <p class="d-md-inline d-none" id="top-2">
+                            <a href="/cart/">
+                                購物車
+                            </a>
+                        </p>
+                    {% else %}
+                        <img src="{% static '/images/car.png' %}" id="cart" href="javascript:void(0);" onclick="doublecheck_login();" />
+                        <p class="d-md-inline d-none" id="top-2" href="javascript:void(0);" onclick="doublecheck_login();">購物車</p>
+                    {% endif %}
+                    </div>
+                    <div class="dropdown" id="top-2" style="margin-left: 10px;">
+                        <a class="btn btn-second btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            功能
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'subject' %}">首頁</a>
+                            {% if user_id %}
+                                <a class="dropdown-item" href="/cartordercheck/">查詢訂單</a>
+                            {% else %}
+                                <a class="dropdown-item" href="javascript:void(0);"  onclick="doublecheck_login();">查詢訂單</a>
+                            {% endif %}    
+                            {% if user_id %}
+                                <a class="dropdown-item" href="/modifymemberprofile/{{ user_id }}/">修改資料</a>
+                            {% else %}
+                                <a class="dropdown-item" href="javascript:void(0);" onclick="doublecheck_login();">修改資料</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </p>
+            </div>
+                      
+        </div>
+    </nav>
+    <div class="container-fluid" id="logo" align="center">
+        <strong><a href="/subject/"><img src="{% static './images/LOGO2.png' %}" alt="Encounter" id="logo_image"></a></strong>
+    </div>
+    <nav class="navbar navbar-expand-md navbar-light" id="btn-1" align="center">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">分類</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div class="btn-group" >
+                        <div class="btn2">
+                            <a href="/classification/brand/" type="button" class="btn dropdown btn-lg"><strong>Encounter U 品牌款</strong></a>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn2">
+                            <a href="/classification/hot/" type="button" class="btn dropdown btn-lg"><strong>熱賣商品</strong></a>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group" >
+                        <div class="btn-group">
+                            <div class="btn2">
+                                <a href="/classification/caot/" type="button" class="btn dropdown btn-lg">外套</a>
+                            </div>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group" >
+                        <div class="btn-group dropdown" id="btn1">
+                            <button type="button" class="btn dropdown-toggle btn-lg" data-bs-toggle="dropdown">上身</button>
+                        <ul class="dropdown-menu">
+                            <li><a  class="dropdown-item" href="/classification/short/"><span>短袖</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/sleeves/"><span>長袖 / 7分袖</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/vest/"><span>背心</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/shirt/"><span>襯衫</span></a></li>
+                        </ul>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group" >
+                        <div class="btn-group dropdown"id="btn1">
+                            <button type="button" class="btn dropdown-toggle btn-lg" data-bs-toggle="dropdown">下身</button>
+                        <ul class="dropdown-menu">
+                            <li><a  class="dropdown-item" href="/classification/shorts/"><span>短褲</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/pants/"><span>長褲</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/jeans/"><span>牛仔褲</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/culottes/"><span>短/長/褲裙</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/overalls/"><span>短/長吊帶褲</span></a></li>
+                        </ul>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn-group dropdown"id="btn1">
+                            <button type="button" class="btn dropdown-toggle btn-lg" data-bs-toggle="dropdown">套裝/洋裝</button>
+                        <ul class="dropdown-menu">
+                            <li><a  class="dropdown-item" href="/classification/sleevelessdress/"><span>無袖洋裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/shortsleevedress/"><span>短袖洋裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/longsleevedress/"><span>長袖洋裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/jumpsuit/"><span>連身套裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/suit/"><span>無袖套裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/shortsleevedresssuit/"><span>短袖套裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/longsleevedresssuit/"><span>長袖套裝</span></a></li>
+                        </ul>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <div class="btn2">
+                                <a href="/classification/bag/" type="button" class="btn dropdown btn-lg">包包</a>
+                            </div>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <div class="btn2">
+                                <a href="/classification/discount/" type="button" class="btn dropdown btn-lg"><strong>特價商品</strong></a>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid"id="lun1">
+        <div class="row justify-content-center align-items-center">
+            {% comment %}區塊一{% endcomment %}
+            <div class="col-12 col-md-8 col-xl-4 mx-1">
+                <div class="carousel slide" id="myCarousel" data-bs-ride="carousel" data-bs-interval="4000">
+                    <ol class="carousel-indicators">
+                        <li data-bs-target="#myCarousel"  data-bs-slide-to="0" class="active"></li>
+                        <li data-bs-target="#myCarousel"  data-bs-slide-to="1"></li>
+                        <li data-bs-target="#myCarousel"  data-bs-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-bs-interval="4000">
+                            <img src="{% static 'images/' %}{{images.0.ImageName}}" id="goods_images"/>
+                            <div class="carousel-caption d-none d-md-block">
+                                <p id="to_right"><span id="number">&nbsp;1 / 3&nbsp;</span></p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" data-bs-interval="4000">
+                            <img src="{% static 'images/' %}{{images.1.ImageName}}" id="goods_images"/>
+                            <div class="carousel-caption d-none d-md-block">
+                                <p id="to_right"><span id="number">&nbsp;2 / 3&nbsp;</span></p>
+                            </div>
+                        </div>
+                        <div class="carousel-item" data-bs-interval="2000">
+                            <img src="{% static 'images/' %}{{images.2.ImageName}}" id="goods_images"/>
+                            <div class="carousel-caption d-none d-md-block">
+                                <p id="to_right"><span id="number">&nbsp;3 / 3&nbsp;</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#myCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+                </div>
+            </div>
+            
+            {% comment %} 額外橫幕空間 {% endcomment %}
+            <div class="col-12 d-none d-xl-block" style="width: 150px;"></div>
+            
+            {% comment %}區塊二{% endcomment %}
+            <div class="col-12 col-md-8 col-xl-4 mx-1">
+                <p id="p_introduce1"><strong>{{ product.Type_id.TypeName }}</strong></p>
+                <p id="p_introduce2"><strong>#{{ product.ProductName }}</strong></p>
+                <p id="p_introduce3"><strong>{{ description.Description }}</strong></p>
+                <div class="container-fuild">
+                    <div class="row">
+                        <div class="col-10">
+                            <p id="p_introduce2">NT${{ product.Price }}</p>
+                        </div>
+                        <div class="col-2">
+                            <img src="{% static './images/heart.png' %}" id="heart"/>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% if user_id %}
+                    <form action="/addtocart/add/{{ product.ProductID }}/" method="POST">
+                {% else %}
+                    <form onclick="doublecheck_login();" >
+                {% endif %}
+                        {% csrf_token %}
+                        <div class="fs-4">
+                            <label>顏色</label>
+                            {% for color in unique_colors %}
+                                <label class="custom-radio-button">
+                                    <input type="radio" name="selectedColor" value="{{ color }}" required>
+                                    <span class="radio-button-label">{{ color }}</span>
+                                </label>
+                            {% endfor %}
+                            <br/><br/>
+                            <label>尺寸</label>
+                            {% for size in unique_sizes %}
+                                <input type="radio" class="ms-5" name="selectedSize" value="{{ size }}" required>
+                                {{ size }}   
+                            {% endfor %}     
+                            <br/><br/>
+                            <label>數量</label>
+                            <select id="stock" name="stock" class="ms-5" data-stock="{{ stock_quantity }}">
+                                <option value="0" selected>0</option>
+                            </select>
+                            <br/><br/>
+                            {% if user_id %}
+                                <button type="submit" class="btn btn-dark" id="btn-black">  
+                                    加入購物車
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-dark" id="btn-black" onclick="doublecheck_login();">  
+                                    加入購物車
+                                </button>
+                            {% endif %}
+                        </div>
+                    </form>
+                <hr/>
+                <ul>
+                    <li>現貨狀況僅供參考，庫存依照付款先後分配</li>
+                    <li>預購需7~20個工作天追加，急件請來電確認</li>
+                    <li>每周一、四向韓國追加下單，照付款先後寄出</li>
+                    <li> 社團+1可和官網合併加入購物車一起付款</li>
+                    <li>付款後加單請聯繫客服</li>
+                </ul>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <hr id="hr1" >
+            {% comment %} 區塊三 {% endcomment %}
+            {% for image in images %}
+                <div class="col-12">
+                    <img src="{% static 'images/' %}{{image.ImageName}}" class="image">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <a href="#"  id="back"><img src="{% static './images/b.png' %}" ></a>
+    <hr/>
+    
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="text-center col-lg-4">
+                    <p id="atlogo">&copy;Encounter&nbsp;&nbsp;U</p>
+                </div>
+                <div class="text-center col-lg-3" id="socials">
+                    <a href="#"><img src="{% static './images/fb.png' %}" alt="fb"></a>&nbsp;
+                    <a href="#"><img src="{% static './images/line1.png' %}" alt="line1"></a>&nbsp;
+                    <a href="#"><img src="{% static './images/ig.png' %}" alt="ig"></a>&nbsp;
+                </div>   
+                <div class="text-center col-lg-2   d-flex  align-items-center d-md-inline d-sm-none" id="surfing">
+                    <p>今日瀏覽次數: {{ daily_views }}</p>
+                </div>   
+                <div class="text-center col-lg-2 d-flex  align-items-center d-md-inline d-sm-none" id="surfing">
+                    <p>累計瀏覽次數: {{ total_views }}</p>
+                </div> 
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 獲取顏色、尺寸和數量的下拉框元素
+            const colorRadios = document.querySelectorAll('input[name="selectedColor"]');
+            const sizeRadios = document.querySelectorAll('input[name="selectedSize"]');
+            const stockSelect = document.getElementById("stock");
+            const maxStock = parseInt(stockSelect.getAttribute("data-stock"));
+            const product = {{ product.ProductID }};
+            // 監聽顏色和尺寸的選擇
+            colorRadios.forEach(function (radio) {
+                radio.addEventListener("change", updateQuantityOptions);
+            });
+            sizeRadios.forEach(function (radio) {
+                radio.addEventListener("change", updateQuantityOptions);
+            });
+    
+            function updateQuantityOptions() {
+                console.log("更新數量選項...");
+                const selectedColor = getSelectedRadioValue(colorRadios);
+                const selectedSize = getSelectedRadioValue(sizeRadios);
+                
+                if (selectedColor && selectedSize) {
+                    // 發起 AJAX 請求以獲取庫存數量
+                    console.log("發起庫存數據的 AJAX 請求...");
+                    console.log("Product_id=", product,",Color_id=",selectedColor,",Size_id=",selectedSize);
+                    const url = `/get_stock/?Product_id=${product}&Color_id=${selectedColor}&Size_id=${selectedSize}`;
+                    console.log("url=", url);
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            const stockQuantity = data.stock_quantity;
+                            console.log("Stock Quantity:", stockQuantity);
+                            // 根據所選顏色和尺寸生成相應的數量選項
+                            const quantityOptions = generateQuantityOptions(stockQuantity);
+                            // 清空並更新數量下拉框
+                            stockSelect.innerHTML = "";
+                            quantityOptions.forEach(function (option) {
+                                stockSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            console.error("獲取庫存數據時發生錯誤: " + error);
+                        });
+                } else {
+                    // 如果未選擇顏色或尺寸，可以處理相應的邏輯
+                    console.log("未選擇顏色和尺寸，處理相關邏輯...");
+                    const option = document.createElement("option");
+                    option.value = "0";
+                    option.textContent = "0";
+                    stockSelect.innerHTML = ""; // 清空並更新數量下拉框
+                    stockSelect.appendChild(option);
+                }
+            }
+    
+            function getSelectedRadioValue(radios) {
+                for (const radio of radios) {
+                    if (radio.checked) {
+                        return radio.value;
+                    }
+                }
+                return 0; // 如果未選擇任何選項
+            }
+    
+            function generateQuantityOptions(stockQuantity) {
+                console.log("生成數量選項...");
+                const options = [];
+                if (stockQuantity > 0) {
+                    console.log("Creating options for stock quantity > 0");
+                    for (let i = 1; i <= stockQuantity; i++) {
+                        const option = document.createElement("option");
+                        option.value = i;
+                        option.textContent = i;
+                        options.push(option);
+                    }
+                } else {
+                    console.log("Creating default option for stock quantity <= 0");
+                    const option = document.createElement("option");
+                    option.value = "0";
+                    option.textContent = "0";
+                    options.push(option);
+                }
+                return options;
+            }
+        });
+    </script>    
+    <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static './js/top.js' %}"></script>
+    <script src="{% static './js/up.js' %}"></script>
+    <script src="{% static 'js/doublecheck_login.js' %}"></script>
+</body>
+</html>

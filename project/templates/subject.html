@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encounter U</title>
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/subject.css' %}">
+</head>
+<body>  
+    <nav class="navbar navbar-light bg-rgb(255, 255, 235) navbar-expand-md" id="top-1">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-end align-items-center d-md-inline d-none"></div>
+            <div class="d-flex justify-content-center align-items-center">
+                <p id="cart_text" class="d-md-inline">
+                    <div>
+                        {% if user_id %}
+                            <div>
+                                <a href="{% url 'logout' %}" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" /> {{ user.Username }} / 登出
+                                </a>
+                            </div>
+                        {% else %}
+                            <div>
+                                <a href="{% url 'login' %}" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" /> 登入/註冊
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div id="cart_container" style="margin-left: 10px;"> 
+                        {% comment %} Add margin to create space between elements {% endcomment %}
+                        {% if user_id %}
+                            <a href="/cart/">
+                                <img src="{% static '/images/car.png' %}" id="cart" />
+                            </a>
+                            <p class="d-md-inline d-none">
+                                <a href="/cart/">
+                                    購物車
+                                </a>
+                            </p>
+                        {% else %}
+                            <img src="{% static '/images/car.png' %}" id="cart" href="javascript:void(0);" onclick="doublecheck_login();" />
+                            <p class="d-md-inline d-none" id="top-2" href="javascript:void(0);" onclick="doublecheck_login();">購物車</p>
+                        {% endif %}
+                    </div>
+                    <div class="dropdown" id="top-2" style="margin-left: 10px;">
+                        <a class="btn btn-second btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            功能
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'subject' %}">首頁</a>
+                            {% if user_id %}
+                                <a class="dropdown-item" href="/cartordercheck/">查詢訂單</a>
+                            {% else %}
+                                <a class="dropdown-item" href="javascript:void(0);"  onclick="doublecheck_login();">查詢訂單</a>
+                            {% endif %}    
+                            {% if user_id %}
+                                <a class="dropdown-item" href="/modifymemberprofile/{{ user_id }}/">修改資料</a>
+                            {% else %}
+                                <a class="dropdown-item" href="javascript:void(0);" onclick="doublecheck_login();">修改資料</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </p>
+            </div>     
+        </div>
+    </nav>
+    <div class="container-fluid" id="logo" align="center">
+        <strong><a href="/subject/"><img src="{% static './images/LOGO2.png' %}" alt="Encounter" id="logo_image"></a></strong>
+    </div>
+    <nav class="navbar navbar-expand-md navbar-light" id="btn-1" align="center">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">分類</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div class="btn-group" >
+                        <div class="btn2">
+                            <a href="/classification/brand/" type="button" class="btn dropdown btn-lg"><strong>Encounter U 品牌款</strong></a>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn2">
+                            <a href="/classification/hot/" type="button" class="btn dropdown btn-lg"><strong>熱賣商品</strong></a>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group" >
+                        <div class="btn-group">
+                            <div class="btn2">
+                                <a href="/classification/caot/" type="button" class="btn dropdown btn-lg">外套</a>
+                            </div>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group" >
+                        <div class="btn-group dropdown" id="btn1">
+                            <button type="button" class="btn dropdown-toggle btn-lg" data-bs-toggle="dropdown">上身</button>
+                        <ul class="dropdown-menu">
+                            <li><a  class="dropdown-item" href="/classification/short/"><span>短袖</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/sleeves/"><span>長袖 / 7分袖</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/vest/"><span>背心</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/shirt/"><span>襯衫</span></a></li>
+                        </ul>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group" >
+                        <div class="btn-group dropdown"id="btn1">
+                            <button type="button" class="btn dropdown-toggle btn-lg" data-bs-toggle="dropdown">下身</button>
+                        <ul class="dropdown-menu">
+                            <li><a  class="dropdown-item" href="/classification/shorts/"><span>短褲</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/pants/"><span>長褲</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/jeans/"><span>牛仔褲</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/culottes/"><span>短/長/褲裙</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/overalls/"><span>短/長吊帶褲</span></a></li>
+                        </ul>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn-group dropdown"id="btn1">
+                            <button type="button" class="btn dropdown-toggle btn-lg" data-bs-toggle="dropdown">套裝/洋裝</button>
+                        <ul class="dropdown-menu">
+                            <li><a  class="dropdown-item" href="/classification/sleevelessdress/"><span>無袖洋裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/shortsleevedress/"><span>短袖洋裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/longsleevedress/"><span>長袖洋裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/jumpsuit/"><span>連身套裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/suit/"><span>無袖套裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/shortsleevedresssuit/"><span>短袖套裝</span></a></li>
+                            <li><a  class="dropdown-item" href="/classification/longsleevedresssuit/"><span>長袖套裝</span></a></li>
+                        </ul>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <div class="btn2">
+                                <a href="/classification/bag/" type="button" class="btn dropdown btn-lg">包包</a>
+                            </div>
+                        </div>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                        <div class="btn-group">
+                            <div class="btn2">
+                                <a href="/classification/discount/" type="button" class="btn dropdown btn-lg"><strong>特價商品</strong></a>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="carousel slide" id="myCarousel" data-bs-ride="carousel"data-bs-interval="2500"  >
+        <ol class="carousel-indicators" >
+            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active">
+            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+            <li data-bs-target="#myCarousel" data-bs-slide-to="3"></li>
+            <li data-bs-target="#myCarousel" data-bs-slide-to="4"></li>
+        </ol>
+        <div class="carousel-inner"align="center">
+            <div class="carousel-item active" >
+                <a href="/productcontent/3/">  
+                <img src="{% static 'images/' %}{{ images.21.ImageName }}" class="d-block img-fluid" alt="h1" id="float_image"/>
+                </a>
+                <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item" >
+                <a href="/productcontent/6/">
+                    <img src="{% static 'images/' %}{{ images.45.ImageName }}" class="d-block img-fluid " alt="h2" id="float_image"/>
+                </a>
+                <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+                <a href="/productcontent/5/">
+                    <img src="{% static 'images/' %}{{ images.37.ImageName }}" class="d-block img-fluid" alt="h3" id="float_image"/>
+                </a>
+                <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+                <a href="/productcontent/4/">
+                    <img src="{% static 'images/' %}{{ images.28.ImageName }}" class="d-block img-fluid" alt="h4" id="float_image"/>
+                </a>
+                <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+            <div class="carousel-item">
+                <a href="/productcontent/7/">
+                    <img src="{% static 'images/' %}{{ images.53.ImageName }}" class="d-block img-fluid" alt="h4" id="float_image"/>
+                </a>
+                <div class="carousel-caption d-none d-md-block"></div>
+            </div>
+        </div>
+            <button class="carousel-control-prev "  data-bs-target="#myCarousel"data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next "  data-bs-target="#myCarousel"data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button> 
+    </div>
+    <div class="container-fluild" align="center" id="NEW">
+        <strong><p>NEW ARRIVALS 熱銷新品</p></strong>
+    </div>
+    <div class="row justify-content-between" id="goods">
+        {% for product in productall %}
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card mt-2" id="card">
+                    <div class="card-header">
+                        {% for product_id, first_image in first_images.items %}
+                            {% if first_image.Product_id == product %}
+                                <img class="card-img-bottom rounded mx-auto d-block" src="{% static 'images/' %}{{ first_image.ImageName  }}"/>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="card-body" id="card_body">
+                        <div class="card-tittle h5">#{{ product.ProductName }}</div> 
+                        {% for description in descriptions %}
+                            {% if description.Product_id == product %}
+                                <div class="card-text pb-3">{{ description.Description }}</div>  
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer" id="card_footer">
+                        <div class="card-text pb-3 text-front" id="nowrap">
+                            NT${{ product.Price }} &nbsp;<a href="/productcontent/{{ product.ProductID }}" class="btn btn-outline-primary btn-lg">相關資訊</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'subject' %}"  id="back"><img src="{% static './images/b.png' %}" ></a>
+    <hr >
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="text-center col-lg-4">
+                    <p id="atlogo">&copy;Encounter&nbsp;&nbsp;U</p>
+                </div>
+                <div class="text-center col-lg-3" id="socials">
+                    <a href="#"><img src="{% static './images/fb.png' %}" alt="fb"></a>&nbsp;
+                    <a href="#"><img src="{% static './images/line1.png' %}" alt="line1"></a>&nbsp;
+                    <a href="#"><img src="{% static './images/ig.png' %}" alt="ig"></a>&nbsp;
+                </div>
+                <div class="text-center col-lg-2   d-flex  align-items-center d-md-inline d-sm-none" id="surfing">
+                    <p>今日瀏覽次數: {{ daily_views }}</p>
+                </div>   
+                <div class="text-center col-lg-2 d-flex  align-items-center d-md-inline d-sm-none" id="surfing">
+                    <p>累計瀏覽次數: {{ total_views }}</p>
+                </div> 
+            </div>
+            </div>
+        </div>
+    </footer>
+    <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static './js/top.js' %}"></script>
+    <script src="{% static './js/up.js' %}"></script>
+    <script src="{% static 'js/doublecheck_login.js' %}"></script>
+</body>
+</html>

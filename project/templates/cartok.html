@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+<title>訂購完成</title>
+<style>
+  body
+  {
+    background-color: #EADDCA;
+  }
+  footer
+  {
+      background-color: #f9f9f9;
+  }
+
+  #top-1
+  {
+      position: relative;
+      height: 70px;
+      background-color: #f9f9f9;
+      z-index: 4;
+  }
+
+  #cart_text
+  {
+      font-size: 15px; 
+      margin-right: 60px; 
+      margin-bottom: 3px;
+      color: #000; /* 將文字顏色設為黑色 */
+    text-decoration: none; /* 去除底線 */
+  }
+  #sign_in
+  {
+      font-size: 15px;
+      margin-right: 25px;
+      height: auto;
+      margin-top: 10px;
+      color: #000; /* 將文字顏色設為黑色 */
+    text-decoration: none; /* 去除底線 */
+  }
+  a
+    {
+        color: #000; /* 將文字顏色設為黑色 */
+        text-decoration: none; /* 去除底線 */
+    }
+  #member
+  {
+      width: 50px;
+      margin-bottom: 10px;
+  }
+  #cart
+  {
+      width: 50px;
+      margin-bottom: 10px;
+      height: auto;
+  }
+  .title
+  {
+    font-weight: bolder;
+    font-size: 40px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .subject
+  {
+    font-weight: bolder;
+    font-size: 25px;
+  }
+  strong
+  {
+    font-size: 20px;
+  }
+</style>
+</head>
+<body>
+  <nav class="navbar navbar-light bg-rgb(255, 255, 235) navbar-expand-md" id="top-1">
+  <div class="container-fluid">
+      <div class="d-flex justify-content-end align-items-center d-md-inline d-none">
+      </div>
+      <div class="d-flex justify-content-center align-items-center">
+          <p id="cart_text" class="d-md-inline">
+              <div>
+                {% if user_id %}
+                    <div>
+                        <a href="{% url 'logout' %}" id="sign_in">
+                            <img src="{% static './images/member4_0.png' %}" id="member" /> {{ user.Username }} / 登出
+                        </a>
+                    </div>
+                {% else %}
+                    <div>
+                        <a href="{% url 'login' %}" id="sign_in">
+                            <img src="{% static './images/member4_0.png' %}" id="member" /> 登入/註冊
+                        </a>
+                    </div>
+                {% endif %}
+              </div>
+              <div id="cart_container" style="margin-left: 10px;"> <!-- Add margin to create space between elements -->
+                {% if user_id %}
+                    <a href="/cart/">
+                        <img src="{% static '/images/car.png' %}" id="cart" />
+                    </a>
+                    <p class="d-md-inline d-none" id="top-2">
+                        <a href="/cart/">
+                            購物車
+                         </a>
+                     </p>
+                {% else %}
+                    <img src="{% static '/images/car.png' %}" id="cart" href="javascript:void(0);" onclick="doublecheck_login();" />
+                    <p class="d-md-inline d-none" id="top-2" href="javascript:void(0);" onclick="doublecheck_login();">購物車</p>
+                {% endif %}
+              </div>
+              <div class="dropdown" id="top-2" style="margin-left: 10px;">
+                  <a class="btn btn-second btn-md dropdown-toggle" href="#" role a-button id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      功能
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'subject' %}">首頁</a>
+                        {% if user_id %}
+                            <a class="dropdown-item" href="/cartordercheck/">查詢訂單</a>
+                        {% else %}
+                            <a class="dropdown-item" href="javascript:void(0);"  onclick="doublecheck_login();">查詢訂單</a>
+                        {% endif %}    
+                        {% if user_id %}
+                            <a class="dropdown-item" href="/modifymemberprofile/{{ user_id }}/">修改資料</a>
+                        {% else %}
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="doublecheck_login();">修改資料</a>
+                        {% endif %}
+                  </div>
+              </div>
+          </p>
+      </div>
+                
+  </div>
+  </nav>
+  <div class="container" id="maindiv">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <p class="title">訂購完成</p>
+            <p class="subject">感謝您的訂購！</p>
+            <p class="desc">親愛的 <strong>{{username}}</strong> 貴賓，您已經成功的完成訂購程序，我們將儘快把您選購的商品郵寄給您！ 再次感謝您支持。<br />
+            <a href="/cartordercheck/?orderid={{orderid}}&customemail={{mailto}}">&lt;詳細內容請按此&gt;</a></p>
+        </div>
+    </div>
+  </div>
+  <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/doublecheck_login.js' %}"></script>
+</body>
+</html>

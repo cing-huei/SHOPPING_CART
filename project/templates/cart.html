@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>購物車</title>
+
+        <link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+    
+    <style>
+        *
+        {
+            margin: 0px;
+            padding: 0px;
+            width: auto;
+        }
+        footer
+        {
+            background-color: #f9f9f9;
+        }
+        #top-1
+        {
+            position: relative;
+            height: 70px;
+            background-color: #f9f9f9;
+            z-index: 4;
+        }
+    
+        #cart_text
+        {
+            font-size: 15px; 
+            margin-right: 60px; 
+            margin-bottom: 3px;
+            color: #000; /* 將文字顏色設為黑色 */
+            text-decoration: none; /* 去除底線 */
+        }
+        #pic
+        {
+            height:50px; 
+            width:50px;
+        }
+        .quantity
+        {
+            width: 70px;
+            text-align:center;
+        }
+        #sign_in
+        {
+            font-size: 15px;
+            margin-right: 25px;
+            height: auto;
+            margin-top: 10px;
+            color: #000; /* 將文字顏色設為黑色 */
+            text-decoration: none; /* 去除底線 */
+        }
+        a
+        {
+            color: #000; /* 將文字顏色設為黑色 */
+            text-decoration: none; /* 去除底線 */
+        }
+        #member
+        {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+        #cart
+        {
+            width: 50px;
+            margin-bottom: 10px;
+            height: auto;
+        }
+        /* 省略原有樣式 */
+
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f2f2f2;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 4;
+        }
+    
+        .navbar-item {
+            margin-right: 10px;
+        }
+        #right_card
+        {
+            background-color: #FFB6C1; 
+            border: 1px solid #FFB6C1;
+        }
+        #cart_left
+        {
+            background-color: #C3CCD3; 
+            border: 1px solid #C3CCD3;
+        }
+        strong
+        {
+            color:white;
+        }
+        #top-1 {
+            display: block;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        #card
+        {
+            font-weight:auto;
+            width: auto;  
+            height: 98%;      
+        }
+        
+        .card-img-bottom 
+        {
+            max-width: max-content;
+            max-height: max-content;
+        }
+        
+        .card-tittle
+        {
+            color: red;
+        }
+        
+        /* img
+        {
+            height: auto;
+            margin-top: 10px;
+        } */
+        
+        .card-footer {
+            padding-top: 25px;
+            text-align: center;
+            font-size: 25px;
+            width: 100%;
+            display: flex;
+            justify-content: center; /* 文字、按鈕、圖像都在正中央 */
+            align-items: center; /* 水平和垂直居中對齊 */
+            flex-wrap: nowrap; /* 防止換行 */
+            
+        }
+        
+        .card-footer p,
+        .card-footer button,
+        .card-footer img {
+            margin: 0 10px; /* 左右間距，根據需求進行調整 */
+        }
+        
+        .card-footer p + button,
+        .card-footer button + img {
+            margin-left: 40px; /* 控制兩個元素之間的左右間距 */
+        }
+        .col-lg-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            #cancel,delete
+            {
+                margin-bottom: 10px;
+            }
+            #cart_left
+            {
+                
+                margin-left: 13px;
+                max-width: 90%;
+            }
+            #right_card
+            {
+                margin-bottom: 40px;
+            }
+            .col-lg-6 {
+            flex: 0 0 100%;
+            max-width: 95%;
+            margin-bottom: 20px;
+            }
+            #card_footer
+            {
+                text-align: center;
+            }
+
+        }
+        
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-light bg-rgb(255, 255, 235) navbar-expand-md" id="top-1">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-end align-items-center d-md-inline d-none"></div>
+        <div class="d-flex justify-content-center align-items-center">
+            <p id="cart_text" class="d-md-inline">
+                <div>
+                    {% if user_id %}
+                        <div>
+                            <a href="{% url 'logout' %}" id="sign_in">
+                                <img src="{% static './images/member4_0.png' %}" id="member" /> {{ user.Username }} / 登出
+                            </a>
+                        </div>
+                    {% else %}
+                        <div>
+                            <a href="{% url 'login' %}" id="sign_in">
+                                <img src="{% static './images/member4_0.png' %}" id="member" /> 登入/註冊
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div id="cart_container" style="margin-left: 10px;"> </div>
+                <div class="dropdown" id="top-2" style="margin-left: 10px;">
+                    <a class="btn btn-second btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        功能
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'subject' %}">首頁</a>
+                        {% if user_id %}
+                            <a class="dropdown-item" href="/cartordercheck/">查詢訂單</a>
+                        {% else %}
+                            <a class="dropdown-item" href="javascript:void(0);"  onclick="doublecheck_login();">查詢訂單</a>
+                        {% endif %}    
+                        {% if user_id %}
+                            <a class="dropdown-item" href="/modifymemberprofile/{{ user_id }}/">修改資料</a>
+                        {% else %}
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="doublecheck_login();">修改資料</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </p>
+        </div>
+                    
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6" id="cart_left">
+            <form action="/addtocart/update/" method="POST"> 
+                {% csrf_token %}
+                    {% comment %} 左側區域：購物車內容 {% endcomment %}
+                    <h1 class="text-center p-3 mb-4"><strong>購物車</strong></h1>
+                    <table class="table cart-table">
+                        <thead>
+                            <tr>
+                                <th>商品內容</th>
+                                <th>商品操作</th>
+                                <th>功能</th>
+                            </tr>
+                        </thead>
+                        {% if cartnum == 0 %}
+                            <div class="message text-center mb-4 h3 text-danger">您的購物車是空的!</div>
+                        {% endif %}
+                        <tbody>
+                            {% for unit in cartlist1 %}
+                            <tr class="cart-item">
+                                <td class="align-middle">
+                                    <input type="checkbox" class="checkout" name="checkout_{{forloop.counter0}}">
+                                    <img src="{% static 'images/' %}{{unit.４}}" id="pic" />
+                                    {% comment %} 品名 {% endcomment %}
+                                    <span>{{unit.0}}</span> 
+                                    {% comment %} 顏色 {% endcomment %}
+                                    <span>{{unit.5}}</span> 
+                                    {% comment %} 尺寸 {% endcomment %}
+                                    <span>{{unit.6}}</span>
+                                    {% comment %} 單價 {% endcomment %}
+                                    <span class="price">NT${{unit.1}}</span> 
+                                </td>
+                                <td class="align-middle">
+                                    <div class="btn-group">
+                                        <input type="button" class="btn btn-sm btn-secondary decrement" value="-"/>
+                                        <input type="number" class="quantity form-control" value="{% if unit.2 %}{{unit.2}}{% else %}0{% endif %}" min="0" max="{{unit.8}}" name="newnumber_{{forloop.counter0}}"/>
+                                        <input type="button" class="btn btn-sm btn-secondary increment" value="+" />
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <input type="button" class="btn btn-sm btn-primary cancel"id="cancel" value= "取消">
+                                    <input type="button" class="delcart btn btn-sm btn-danger delete" id="delete" value="刪除" onclick="confirmAndDelete('{{forloop.counter0}}')">
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table> 
+                    <div class="navbar" id="bottom-navbar">
+                        <div class="navbar-item">
+                            <input type="checkbox" id="selectAll">
+                            <label for="selectAll">全選</label>
+                        </div>
+                        <div class="navbar-item">
+                            總金額：<span id="totalPrice">NT$0</span>
+                        </div>
+                        <div class="navbar-item">
+                            <input class="btn btn-lg btn-secondary" type="button" value="清空購物車" onclick="confirmClearCart()" />
+                            <input class="btn btn-lg btn-primary" type="button" value="繼續購物" onclick="window.location='/subject/'">
+                            {% if user_id %}
+                                <input class="btn btn-lg btn-success" type="submit" value="結帳" onclick="checkCartAndProceed();"/>
+                            {% else %}
+                                <input class="btn btn-lg btn-success" type="button" value="結帳" href="javascript:void(0);" onclick="doublecheck_login();"></a>
+                            {% endif %}
+                        </div>
+                    </div>
+            </form>
+        </div>
+        <div class="col-lg-6" id="cart_right">
+            {% comment %} 右側區域：推薦商品 {% endcomment %}
+            <div class="p-3" id="right_card">
+                <h1 class="text-center mb-4"><strong>♡ 推薦商品 ♡</strong></h1>
+                <div class="row justify-content-between" id="goods">
+                    {% for product in products %}
+                    <div class="col-lg-6">
+                        {% comment %} 第一個 Bootstrap card 模板 {% endcomment %}
+                        <div class="card mt-2" id="card">                                   
+                            <div class="card-header">
+                                {% for product_id, first_image in first_images.items %}
+                                    {% if first_image.Product_id == product %}
+                                        <img class="card-img-bottom rounded mx-auto d-block" src="{% static 'images/' %}{{ first_image.ImageName  }}">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="card-body" id="card_body">
+                                <div class="card-title h5 text-danger">#{{product.ProductName}}</div> 
+                                {% for description in descriptions %}
+                                    {% if description.Product_id == product %}
+                                        <div class="card-text pb-3">{{ description.Description }}</div>  
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="card-footer" id="card_footer">
+                                <div class="card-text pb-3 text-front" id="nowrap">
+                                    NT${{product.Price}} &nbsp;<a href="/productcontent/{{product.ProductID}}" class="btn btn-outline-primary btn-lg">相關資訊</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //獲取數量輸入框和按鈕相關元素 
+    const quantityInputs = document.querySelectorAll('.quantity');
+    const incrementButtons = document.querySelectorAll('.increment');
+    const decrementButtons = document.querySelectorAll('.decrement');
+    const cancelButtons = document.querySelectorAll('.cancel');
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const totalPriceElement = document.getElementById('totalPrice');
+    const priceElements = document.querySelectorAll('.price');
+    const checkoutCheckboxes = document.querySelectorAll('.checkout');
+
+    //全選複選框狀態改變時的處理函數
+    selectAllCheckbox.addEventListener('change', () => {
+        const isChecked = selectAllCheckbox.checked;
+        checkoutCheckboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+            calculateTotalPrice();
+        });
+    });
+
+    //商品複選框狀態改變時的處理函數
+    checkoutCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            calculateTotalPrice();
+        });
+    });
+
+    //計算總金額的函數
+    function calculateTotalPrice() {
+        let totalPrice = 0;
+        for (let i = 0; i < checkoutCheckboxes.length; i++) {
+            if (checkoutCheckboxes[i].checked) {
+                const quantity = parseInt(quantityInputs[i].value);
+                const price = parseInt(priceElements[i].textContent.replace('NT$', ''));
+                totalPrice += quantity * price;
+            }
+        }
+        totalPriceElement.textContent = 'NT$' + totalPrice;
+    }
+
+    quantityInputs.forEach((quantityInput, index) => {
+        const incrementButton = incrementButtons[index];
+        const decrementButton = decrementButtons[index];
+    
+        // 绑定增加按钮事件處理函數
+        incrementButton.addEventListener('click', (event) => {
+            handleIncrementClick(event, quantityInput);
+        });
+    
+        // 绑定减少按钮事件處理函數
+        decrementButton.addEventListener('click', (event) => {
+            handleDecrementClick(event, quantityInput);
+        });
+    
+        // 绑定數量輸入框事件處理函數
+        quantityInput.addEventListener('input', (event) => {
+            handleQuantityChange(event, quantityInput);
+        });
+    });
+    
+    function handleIncrementClick(event, quantityInput) {
+        let currentValue = parseInt(quantityInput.value);
+        const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+
+        if (1<currentValue < maxQuantity-1) {
+            quantityInput.value = currentValue + 1;
+            calculateTotalPrice();
+            console.log('點擊增加按鈕，當前值：', quantityInput.value);
+        }
+
+        if(currentValue >= maxQuantity){
+            quantityInput.value = maxQuantity;
+            calculateTotalPrice();
+            console.log('點擊增加按鈕，當前值：', quantityInput.value);
+        }
+    }
+    
+    function handleDecrementClick(event, quantityInput) {
+        let currentValue = parseInt(quantityInput.value);
+
+        if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+            calculateTotalPrice();
+            console.log('點擊減少按鈕，當前值：', quantityInput.value);
+        }
+    }
+    
+    function handleQuantityChange(event, quantityInput) {
+        let currentValue = parseInt(quantityInput.value);
+        const maxQuantity = parseInt(quantityInput.getAttribute('max'));
+
+        if (currentValue < 1) {
+            quantityInput.value = 1;
+            console.log('輸入框值小於1，重置為1');
+        }
+        
+        if (currentValue < maxQuantity) {
+            quantityInput.value = currentValue;
+            calculateTotalPrice();
+            console.log('輸入框值更改為：', quantityInput.value);
+        }
+
+        if(currentValue >= maxQuantity){
+            quantityInput.value = maxQuantity;
+            calculateTotalPrice();
+            console.log('輸入框值更改為：', quantityInput.value);
+        }
+    }
+    
+    cancelButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            const quantityInput = button.parentNode.previousElementSibling.querySelector('.quantity');
+            quantityInput.value = 1;
+            calculateTotalPrice(); // 更新總金額
+        });
+    });
+
+    function confirmAndDelete(productIndex) {
+        const message = '您確定要刪除這個商品嗎？';
+        if (confirm(message)) {
+            // 如果點擊確認，則執行刪除操作。
+            window.location = "/addtocart/remove/" + productIndex;
+        } else {
+            // 點擊取消，不執行任何操作。
+        }
+    }
+    
+    function confirmClearCart() {
+        if (confirm("您確定要清空購物車嗎？")) {
+            // 如果使用者點擊確認，將執行清空購物車的操作
+            window.location = '/addtocart/empty/';
+        } else {
+            // 使用者點擊取消，不會執行任何操作
+        }
+    }
+
+    function checkCartAndProceed() {
+        const cartItems = document.querySelectorAll('.cart-item');
+        // 獲取提交按钮和表單元素
+        const submitButton = document.querySelector('input[type="submit"]');
+        const formElement = document.querySelector('form');
+        let cartIsEmpty = true;
+        let noneSelected = true;
+    
+        cartItems.forEach(item => {
+            const quantity = parseInt(item.querySelector('.quantity').value);
+            if (quantity > 0) {
+                cartIsEmpty = false;
+            }
+            const checkoutCheckbox = item.querySelector('.checkout');
+            if (checkoutCheckbox.checked) {
+                noneSelected = false;
+            }
+        });
+    
+        if (cartIsEmpty) {
+            alert("購物車是空的");
+            // 取消提交表單
+            event.preventDefault();
+        } else if (noneSelected) {
+            alert("未選擇商品");
+            // 取消提交表單
+            event.preventDefault();
+        } else {
+            // 提交表單
+            formElement.submit();
+        }
+    }  
+</script>
+<script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static './js/top.js' %}"></script>
+<script src="{% static 'js/doublecheck_login.js' %}"></script>
+</body>
+</html>
+
+
+   

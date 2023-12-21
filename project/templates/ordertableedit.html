@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>編輯商品訂單</title>
+    <link rel="stylesheet" href="{% static 'ordertableedit.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>商品訂單-編輯資料</b></h1>
+        <a href="/ordertable/" class="navbar-brand" style="margin-right: 20px;"><h4><b>返回</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/ordertableedit/{{ update.id }}/" method="POST" class="table">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>訂單資訊</th>
+            </tr>
+            <tr>
+                <th><span>*</span>產品名稱</th>
+                <td><input type="text" id="dname" name="dname" class="form-control" required placeholder="請輸入產品名稱" value="{{ update.dname }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>顏色</th>
+                <td>
+                    <input type="text" id="dcolor" name="dcolor" placeholder="請輸入顏色" value="{{ update.dcolor }}" class="form-control" required>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>尺寸</th>
+                <td>
+                    <input type="text" id="dsize" name="dsize" placeholder="請輸入尺寸" value="{{ update.dsize }}" class="form-control" required>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>單價</th>
+                <td><input type="number" id="dunitprice" name="dunitprice" class="form-control" required placeholder="請輸入單價" value="{{ update.dunitprice }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>數量</th>
+                <td><input type="number" id="dquantity" name="dquantity" class="form-control" required placeholder="請輸入數量" value="{{ update.dquantity }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>金額</th>
+                <td><input type="number" id="dtotal " name="dtotal" class="form-control" required placeholder="請輸入金額" value="{{ update.dtotal }}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input type="submit" name="button" id="button" value="修改" class="btn btn-primary btn-lg custom-margin">
+                    <input type="reset" name="button2" id="button2" value="恢復" class="btn btn-danger btn-lg">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

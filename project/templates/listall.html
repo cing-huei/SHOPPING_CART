@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員管理</title>   
+    <link rel="stylesheet" href="{% static './listall.css' %}">
+    <link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-light bg-rgb(255, 255, 235) navbar-expand-md" id="top-1">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-end align-items-center d-md-inline d-none"></div>
+            <div class="d-flex justify-content-center align-items-center">
+                <p id="cart_text" class="d-md-inline">
+                    <div>
+                        {% if request.user.is_authenticated %}
+                            <div>
+                                <a href="/adminlogout/" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" />{{ user.username }} / 登出
+                                </a>
+                            </div>
+                        {% else %}
+                            <div>
+                                <a href="/adminlogin/" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" />登入
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="dropdown" id="top-2" style="margin-left: 10px; margin-right: 80px;">
+                        <a class="btn btn-second btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            功能
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="/backgroundhome/">後台首頁</a>
+                            <a class="dropdown-item" href="/managementlist/">權限管理</a>
+                            <a class="dropdown-item" href="#">商品管理</a>
+                            <a class="dropdown-item" href="/orders/">收件管理</a>
+                            <a class="dropdown-item" href="/ordertable/">商品訂單</a>
+                            <a class="dropdown-item" href="/inventorysheet/">庫存查詢</a>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="head_content text-center mt-3">
+            <h1 class="title">會員管理</h1>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="/createdata/"><button type="button" class="btn btn-success">新增會員資料</button></a>
+            <span class="navbar-text flex-grow-1 text-center">目前的資料筆數: {{ resultList.count }}</span>
+            <form class="form-inline d-flex" action="/listall/" method="post">
+                <input class="form-control ml-auto" type="search" id="site_search" name="site_search" placeholder="🔍請輸入關鍵字" >
+                <button class="btn btn-outline-success" type="submit" id="btn_search">搜 尋</button>
+                <button class="btn btn-outline-primary" type="button" id="btn_back" onclick="history.back()">返 回</button>
+            </form>
+        </div>
+    </nav>
+       
+    {% if status %}
+        <table cellpadding="20" cellspacing="0"class="table table-striped table-hover" id="data-table">
+            <tr>
+                <th>📝編號</th>
+                <th>✏️姓名</th>
+                <th>♂♀性別</th>
+                <th>🔒密碼</th>
+                <th>🎂生日</th>
+                <th>✉信箱</th>
+                <th>✆手機</th>
+                <th>🏡地址</th>
+                <th>☹黑名單</th>
+                <th>🛠️操作</th>
+            </tr>
+            {% for data in resultList %}
+                <tr>
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.Username }}</td>
+                    <td>{% if data.Usersex  == "M" %}男{% else %}女{% endif %}</td>
+                    <td>{{ data.Passwd }}</td>
+                    <td>{{ data.Userbirthday |date:'Y-m-d' }}</td>
+                    <td>{{ data.Usermail }}</td>
+                    <td>{{ data.Usertel }}</td>
+                    <td>{{ data.Useraddress }}</td>
+                    <td>
+                        {% if data.Isblacklisted %}
+                            是
+                        {% else %}
+                            否
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/edit/{{ data.id }}/"><button type="button" class="btn btn-outline-primary">✚編輯</button></a>
+                        <a href="/delete/{{ data.id }}/"><button type="button" class="btn btn-outline-danger">✘刪除</button></a>
+                        
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <nav aria-label="Page navigation example">
+            <div class="d-flex justify-content-center">
+                <ul class="pagination d-flex justify-content-center">
+                    <li class="page-item" id="previousPage">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" id="page1"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item" id="page2"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item" id="page3"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item" id="nextPage">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+        
+                <!-- 下拉选择框 -->
+                <div class="form-group d-flex  align-items-center">
+                    <label for="pageSelect">第</label>
+                    <select class="form-control" id="pageSelect">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <label>頁</label>
+                </div>
+            </div>
+        </nav>
+    {% else %}
+        <h1>無資料</h1>
+    {% endif %}
+    <script>
+        // 獲取數據總數和每頁顯示的數據量
+        var totalData = {{ resultList|length }};
+        var itemsPerPage = 10; // 每頁顯示10條數據
+    
+        // 計算總頁數
+        var totalPages = Math.ceil(totalData / itemsPerPage);
+    
+        // 初始化當前頁
+        var currentPage = 1;
+    
+        // 每次只顯示最多的頁碼數（這裡設為5）
+        var maxVisiblePages = 5;
+    
+        // 獲取分頁元素
+        var pagination = document.querySelector('.pagination');
+        var previousPage = document.getElementById('previousPage');
+        var nextPage = document.getElementById('nextPage');
+        var pageSelect = document.getElementById('pageSelect');
+    
+        // 更新分頁元素的可見性
+        function updatePagination() {
+            if (totalPages <= 1) {
+                pagination.style.display = 'none';
+            } else {
+                pagination.style.display = 'block';
+    
+                // 清空分頁元素
+                pagination.innerHTML = '';
+    
+                // 添加上一頁鏈接
+                if (currentPage > 1) {
+                    pagination.appendChild(createPageLink(currentPage - 1, 'Previous', '&laquo;'));
+                }
+    
+                // 計算要顯示的頁碼範圍
+                var startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1);
+                var endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+
+                // 如果末尾頁碼不足 maxVisiblePages，則調整 startPage
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(endPage - maxVisiblePages + 1, 1); // 确保 startPage 不小于1
+                }
+    
+                // 添加頁碼鏈接
+                for (var i = startPage; i <= endPage; i++) {
+                    pagination.appendChild(createPageLink(i, 'Page ' + i, i.toString()));
+                }
+    
+                // 添加下一頁鏈接
+                if (currentPage < totalPages) {
+                    pagination.appendChild(createPageLink(currentPage + 1, 'Next', '&raquo;'));
+                }
+            }
+    
+            // 更新下拉選單的選項
+            updatePageSelect();
+        }
+    
+        // Helper 函數來創建分頁鏈接
+        function createPageLink(page, label, content) {
+            var li = document.createElement('li');
+            li.className = 'page-item';
+            if (page === currentPage) {
+                li.classList.add('active');
+            }
+            var a = document.createElement('a');
+            a.className = 'page-link';
+            a.href = '#';
+            a.textContent = content;
+            a.setAttribute('aria-label', label);
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                currentPage = page;
+                updatePagination();
+                updateTableVisibility();
+            });
+            li.appendChild(a);
+            return li;
+        }
+    
+        // Helper 函數來更新下拉選單的選項
+        function updatePageSelect() {
+            pageSelect.innerHTML = '';
+            for (var i = 1; i <= totalPages; i++) {
+                var option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                pageSelect.appendChild(option);
+            }
+            pageSelect.value = currentPage; // 確保下拉選單顯示當前選擇的頁面
+        }
+        
+        // Helper 函數來創建分頁鏈接
+        function createPageLink(page, label, content) {
+            var li = document.createElement('li');
+            li.className = 'page-item';
+            if (page === currentPage) {
+                li.classList.add('active');
+            }
+            var a = document.createElement('a');
+            a.className = 'page-link';
+            a.href = '#';
+            a.textContent = content;
+            a.setAttribute('aria-label', label);
+
+            // 使用 Bootstrap 5 的內建符號
+            if (label === 'Previous') {
+                a.innerHTML = '<span aria-hidden="true">&laquo;</span>';
+            } else if (label === 'Next') {
+                a.innerHTML = '<span aria-hidden="true">&raquo;</span>';
+            }
+
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                currentPage = page;
+                updatePagination();
+                updateTableVisibility();
+            });
+            li.appendChild(a);
+            return li;
+        }
+
+        // 更新數據表格的可見性
+        function updateTableVisibility() {
+            var startIndex = (currentPage - 1) * itemsPerPage;
+            var endIndex = Math.min(currentPage * itemsPerPage, totalData);
+    
+            var tableRows = document.querySelectorAll('#data-table tr');
+            tableRows.forEach(function (row, index) {
+                if (index === 0 || (index >= startIndex + 1 && index <= endIndex)) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    
+        // 初始化分頁
+        updatePagination();
+        updateTableVisibility();
+    
+        // 附加一個事件監聽器到pageSelect下拉框
+        pageSelect.addEventListener('change', function() {
+            // 獲取所選頁數
+            var selectedPage = parseInt(pageSelect.value);
+    
+            // 更新當前頁數並刷新內容
+            if (!isNaN(selectedPage) && selectedPage !== currentPage && selectedPage >= 1 && selectedPage <= totalPages) {
+                currentPage = selectedPage;
+                updatePagination();
+                updateTableVisibility();
+            }
+        });
+    </script>
+    <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static './js/top.js' %}"></script>
+</body>
+</html>

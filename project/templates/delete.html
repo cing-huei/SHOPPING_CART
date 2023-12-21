@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>刪除資料</title>
+    <link rel="stylesheet" href="{% static './delete.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>會員管理-刪除資料</b></h1>
+        <a href="/listall/" class="navbar-brand" style="margin-right: 20px;"><h4><b>返回</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/delete/{{ dict_data.id }}/" method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>會員資訊</th>
+            </tr>
+            <tr>
+                <th>姓名</th>
+                <td>{{ dict_data.Username }}</td>
+            </tr>
+            <tr>
+                <th>性別</th>
+                <td>
+                   {% if dict_data.Usersex == "M" %}男{% endif %}
+                   {% if dict_data.Usersex == "F" %}女{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>密碼</th>
+                <td>{{ dict_data.Passwd }}</td>
+            </tr>
+            <tr>
+                <th>生日</th>
+                <td>{{ dict_data.Userbirthday|date:'Y-m-d' }}</td>
+            </tr>
+            <tr>
+                <th>信箱</th>
+                <td>{{ dict_data.Usermail }}</td>
+            </tr>
+            <tr>
+                <th>手機</th>
+                <td>{{ dict_data.Usertel }}</td>
+            </tr>
+            <tr>
+                <th>地址</th>
+                <td>{{ dict_data.Useraddress }}</td>
+            </tr>
+            <tr>
+                <th>黑名單</th>
+                <td>
+                    {% if dict_data.Isblacklisted %}
+                        是
+                    {% else %}
+                        否
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button onclick="return doublecheck();" class="btn btn-danger btn-lg custom-margin" name="button">刪除</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="{% static 'js/doublecheck_delete.js' %}"></script>
+{% endblock %}

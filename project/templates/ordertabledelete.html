@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>刪除商品訂單</title>
+    <link rel="stylesheet" href="{% static './ordertabledelete.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>商品訂單-刪除資料</b></h1>
+        <a href="/ordertable/" class="navbar-brand" style="margin-right: 20px;"><h4><b>返回</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/ordertabledelete/{{ dict_data.id }}/" method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>訂單資訊</th>
+            </tr>
+            <tr>
+                <th>產品名稱</th>
+                <td>{{ dict_data.dname }}</td>
+            </tr>
+            <tr>
+                <th>顏色</th>
+                <td>{{ dict_data.dcolor }}</td>
+            </tr>
+            <tr>
+                <th>尺寸</th>
+                <td>{{ dict_data.dsize }}</td>
+            </tr>
+            <tr>
+                <th>單價</th>
+                <td>{{ dict_data.dunitprice }}</td>
+            </tr>
+            <tr>
+                <th>數量</th>
+                <td>{{ dict_data.dquantity }}</td>
+            </tr>
+            <tr>
+                <th>金額</th>
+                <td>{{ dict_data.dtotal }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button onclick="return doublecheck();" class="btn btn-danger btn-lg custom-margin" name="button">刪除</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="{% static 'js/doublecheck_delete.js' %}"></script>
+{% endblock %}

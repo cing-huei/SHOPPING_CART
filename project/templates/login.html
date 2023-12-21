@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入</title>
+    <link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './login.css' %}">
+</head>
+<body>
+<div  class="container-fluild"  id="outer" align="center">
+    <div class="col col-md-6 col-lg-4" >
+        <strong><p>登入 Encounter U 服飾會員</p></strong>
+    </div>
+</div>
+<div class="container" align="center">
+    <div class="row justify-content-center align-items-center">  
+        <div class="col col-md-6 col-lg-4">
+            <div class="contentbox">
+                <div id="logo">
+                    <img src="{% static './images/LOGO_log.jpg' %}">
+                </div>
+                <div class="container">
+                    <form action="/login/" method="post">
+                        {% csrf_token %}
+                        <div class="error_message">
+                            {% if error_message %}
+                                <p class="text-danger">{{ error_message }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email" id="label1"><span>*</span>信箱</label>
+                            <input type="email" name="email" placeholder="請輸入信箱xxx@xxx.com" class="form-control"required/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="pass-wd" id="label2"><span>*</span>密碼</label>
+                            <input type="password" name="pass-wd" id="pass-wd" class="form-control" placeholder="請輸入密碼" required/>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="captcha" id="label3"><span>*</span>驗證碼</label>
+                            {{ postform.captcha }}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-start mt-3">
+                            <div class="w-50 me-2">
+                                <button type="submit" id="bnt1" class="btn btn-outline-primary w-100">登入會員</button>
+                            </div>
+                            <div class="w-50 ms-2">
+                                <button type="reset" id="bnt2" class="btn btn-outline-primary w-100"><a href="{% url 'subject' %}">返回首頁</a></button>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <p><a href="{% url 'getpassword'  %}">忘記密碼?</a></p>
+                            <p><a href="{% url 'signup' %}">還不是會員？點選我註冊</a></p>
+                        </div>
+                    </form>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html> 
+

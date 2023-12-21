@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+    <title>訂單查詢</title>
+    <style>
+      *
+      {
+          margin: 0px;
+          padding: 0px;
+          width: auto;
+      }
+      footer
+      {
+          background-color: #f9f9f9;
+      }
+      #top-1
+      {
+          position: relative;
+          height: 70px;
+          background-color: #f9f9f9;
+          z-index: 4;
+      }
+  
+      #cart_text
+      {
+          font-size: 15px; 
+          margin-right: 60px; 
+          margin-bottom: 3px;
+          color: #000; /* 將文字顏色設為黑色 */
+          text-decoration: none; /* 去除底線 */
+      }
+      #sign_in
+      {
+          font-size: 15px;
+          margin-right: 25px;
+          height: auto;
+          margin-top: 10px;
+          color: #000; /* 將文字顏色設為黑色 */
+          text-decoration: none; /* 去除底線 */
+      }
+      a
+      {
+          color: #000; /* 將文字顏色設為黑色 */
+          text-decoration: none; /* 去除底線 */
+      }
+      #member
+      {
+          width: 50px;
+          margin-bottom: 10px;
+      }
+      #cart
+      {
+          width: 50px;
+          margin-bottom: 10px;
+          height: auto;
+      }
+      /* 為購物清單、表格和客戶資訊表格之間的垂直間距添加樣式*/
+      .table-container {
+        margin-top: 20px; /* 上外邊距，你可以根據需要調整距離 */
+        margin-bottom: 20px; /* 下外邊距，你可以根據需要調整距離 */
+      }
+      .message
+      {
+        font-size: 24px;
+        font-weight: bold;
+        color: red;
+      }
+      .title
+      {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .subject
+      {
+          font-size: 24px;
+          font-weight: bold;
+      }
+      /* 美化表格 */
+      body
+      {
+        background-color: #EADDCA;
+      }
+      #maindiv
+      {   
+          padding: 50px;
+      }
+      table {
+      font-size: 14px;
+      border-collapse: collapse;
+      width: 90%;
+      margin: auto;
+      }
+      #info
+      {
+      background-color: #e9ecef;
+      font-weight: bold;
+      text-align: left;
+      }
+      
+      th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      }
+      td {
+      background-color: white;
+      font-weight: bold;
+      }
+  
+      th {
+      background-color: #e9ecef;
+      font-weight: bold;
+      text-align: center;
+      }
+      
+      /* 美化按鈕 */
+      .btn1 {
+      color: #fff;
+      font-size: 14px;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      
+      }
+      .button-container {
+      text-align: center;
+      }
+  
+      .button-container .btn1 {
+      margin: 0 20px;
+      }
+
+
+
+      </style>
+</head>  
+<body>  
+    <nav class="navbar navbar-light bg-rgb(255, 255, 235) navbar-expand-md" id="top-1">
+      <div class="container-fluid">
+          <div class="d-flex justify-content-end align-items-center d-md-inline d-none">
+              <form class="d-flex">
+                  {% comment %} <div><input class="form-control me-2" type="search" placeholder="輸入關鍵字"></div>
+                  <div><button class="btn btn-outline-success mx-2" type="submit">搜尋</button></div> {% endcomment %}
+              </form>
+          </div>
+          <div class="d-flex justify-content-center align-items-center">
+              <p id="cart_text" class="d-md-inline">
+                  <div>
+                    {% if user_id %}
+                      <div>
+                          <a href="{% url 'logout' %}" id="sign_in">
+                              <img src="{% static './images/member4_0.png' %}" id="member" /> {{ user.Username }} / 登出
+                          </a>
+                      </div>
+                    {% else %}
+                          <div>
+                              <a href="{% url 'login' %}" id="sign_in">
+                                  <img src="{% static './images/member4_0.png' %}" id="member" /> 登入/註冊
+                              </a>
+                          </div>
+                      {% endif %}
+                  </div>
+                  <div id="cart_container" style="margin-left: 10px;"> 
+                    {% comment %} Add margin to create space between elements {% endcomment %}
+                    {% if user_id %}
+                      <a href="/cart/">
+                        <img src="{% static '/images/car.png' %}" id="cart" />
+                      </a>
+                      <p class="d-md-inline d-none" id="top-2">
+                        <a href="/cart/">
+                          購物車
+                        </a>
+                      </p>
+                    {% else %}
+                      <img src="{% static '/images/car.png' %}" id="cart" href="javascript:void(0);" onclick="doublecheck_login();" />
+                      <p class="d-md-inline d-none" id="top-2" href="javascript:void(0);" onclick="doublecheck_login();">購物車</p>
+                    {% endif %}
+                  </div>
+                  <div class="dropdown" id="top-2" style="margin-left: 10px;">
+                      <a class="btn btn-second btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        功能
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                          <a class="dropdown-item" href="{% url 'subject' %}">首頁</a>
+                          {% if user_id %}
+                            <a class="dropdown-item" href="/modifymemberprofile/{{ user_id }}/">修改資料</a>
+                          {% else %}
+                            <a class="dropdown-item" href="javascript:void(0);" onclick="doublecheck_login();">修改資料</a>
+                          {% endif %}
+                      </div>
+                  </div>
+              </p>
+          </div>
+                    
+      </div>
+  </nav>
+  <div id="maindiv">
+    {% if firstsearch == 1 %}
+      <form action="/cartordercheck/" method="POST" name="form1">
+        <p class="title">訂單查詢 </p>
+        <table border="0" align="center" cellpadding="10" cellspacing="0">
+          <tr>
+            <td id="info">訂單編號</td>
+            <td><input name="orderid" type="text" class="normalinput" size="10" required/></td>
+            <td id="info">客戶電子郵件</td>
+            <td><input name="customemail" type="text" class="normalinput" required/></td>
+            <td class="text-center"><input type="submit" name="Submit3" value="送出" class="btn1 btn-primary"/></td>
+          </tr>
+        </table>
+      </form>
+    {% else %}
+      {% if notfound == 1 %}
+        <div class="message">對不起，資料庫中並沒相關的資訊，請重新輸入。</div>
+        <form action="/cartordercheck/" method="POST" name="form2">
+          <p class="title">訂單查詢 </p>
+          <table border="0" align="center" cellpadding="10" cellspacing="0">
+            <tr>
+              <td id="info">訂單編號</td>
+              <td><input name="orderid" type="text" class="normalinput" size="10" required/></td>
+              <td id="info">客戶電子郵件</td>
+              <td><input name="customemail" type="text" class="normalinput" required/></td>
+              <td class="text-center"><input type="submit" name="Submit3" value="送出" class="btn1 btn-primary"/></td>
+            </tr>
+          </table>
+        </form>
+      {% else %}
+      
+        <p class="title">訂單資料 </p>
+      <div class="table-container">  
+        <p class="subject">訂單編號：{{orderid}}<font color="#FF0000"></font></p>
+        <table width="90%" border="0" align="center" cellpadding="6" cellspacing="0">
+          <tr class="head3">
+            <th align="center" >產品名稱</th>
+            <th width="100" align="center" >顏色</th>
+            <th width="100" align="center" >尺寸</th>
+            <th width="80" align="center" >單價</th>
+            <th width="80" align="center" >數量</th>
+            <th width="150" align="center" >金額</th>
+          </tr>
+          {% for detail in details %}
+            <tr>
+              <td align="left" >{{detail.dname}}</td>
+              <td width="100" align="center" >{{detail.dcolor}}</td>
+              <td width="100" align="center" >{{detail.dsize}}</td>
+              <td width="100" align="center" >$ {{detail.dunitprice}}</td>
+              <td width="100" align="center" >{{detail.dquantity}}</td>
+              <td width="100" align="center" ><strong>$ {{detail.dtotal}}</strong></td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="5" align="left"  class="upline"><strong>小計</strong></td>
+            <td width="150" align="center"  class="upline"><strong>$ {{order.subtotal}}</strong></td>
+          </tr>
+          <tr>
+            <td colspan="5" align="left"  class="upline"><strong>運費</strong></td>
+            <td width="150" align="center"  class="upline"><strong>$ {{order.shipping}}</strong></td>
+          </tr>
+          <tr>
+            <td colspan="5" align="left"  class="downline"><strong>總計</strong></td>
+            <td width="150" align="center"  class="downline"><strong><font color="#FF0000">$ {{order.grandtotal}}</font></strong></td>
+          </tr>
+        </table>
+      </div>
+      <div class="table-container">
+        <p class="subject">收件者資訊</p>
+        <table width="100%" border="0"  align="center" cellpadding="6" cellspacing="0">
+            <tr>
+              <th width="100" align="left">資訊</th>
+              <th>內容</th>
+            </tr>
+            <tr>
+              <td width="100" align="left" ><strong>姓名</strong></td>
+              <td >{{order.customname}}</td>
+            </tr>
+            <tr>
+              <td width="100" align="left" ><strong>手機</strong></td>
+              <td >{{order.customphone}}</td>
+            </tr>
+            <tr>
+                <td width="100" align="left"><strong>物流</strong></td>
+                <td >{{order.shipping_method}}</td>
+            </tr>
+            <tr>
+                <td width="100" align="left"><strong>地址</strong></td>
+                <td >{{order.customaddress}}</td>
+            </tr>
+            <tr>
+              <td align="left" ><strong>電子郵件</strong></td>
+              <td >{{user.Usermail}}</td>
+            </tr>
+            <tr>
+                <td align="left" ><strong>付款方式</strong></td>
+                <td >{{order.paytype}}</td>   
+            </tr>
+          </table>
+          <table border="0" align="center" cellpadding="10" cellspacing="0">
+            <tr>
+              <td class="text-center"><input type="button" name="Submit" value="回到首頁" onclick="window.location='/subject/'" class="btn1 btn-primary"/></td>
+            </tr>
+          </table>
+      </div>
+      {% endif %}
+    {% endif %}
+  </div>
+  <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/doublecheck_login.js' %}"></script>
+</body>
+</html>

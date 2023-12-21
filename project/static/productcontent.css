@@ -1,0 +1,223 @@
+*
+{
+    margin: 0px;
+    padding: 0px;
+    width: auto;
+}
+footer
+{
+    background-color: #f9f9f9;
+}
+#top-1
+{
+    position: relative;
+    height: 70px;
+    background-color: #f9f9f9;
+    z-index: 4;
+}
+
+
+#cart_text
+{
+    font-size: 15px; 
+    margin-right: 60px; 
+    margin-bottom: 3px;
+    color: #000; /* 將文字顏色設為黑色 */
+    text-decoration: none; /* 去除底線 */
+}
+#sign_in
+{
+    font-size: 15px;
+    margin-right: 25px;
+    height: auto;
+    margin-top: 10px;
+    color: #000; /* 將文字顏色設為黑色 */
+    text-decoration: none; /* 去除底線 */
+}
+a
+{
+    color: #000; /* 將文字顏色設為黑色 */
+    text-decoration: none; /* 去除底線 */
+}
+#member
+{
+    width: 50px;
+    margin-bottom: 10px;
+}
+#cart
+{
+    width: 50px;
+    margin-bottom: 10px;
+    height: auto;
+}
+#logo_image
+{
+    background-color: white;
+    width: auto;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    width: 50%;
+    height: auto;
+}
+.navbar-brand  /*分類*/
+{
+    margin: 10px 30px 0px 30px;
+}
+#btn-1.navbar
+{
+    position: relative;
+    z-index: 3;
+    width: auto ; 
+    background-color:#EADDCA;
+}
+
+#lun1
+{
+    margin-top: 30px;
+}
+
+#myCarousel img {
+    max-width: 100%;
+    max-height: 100%;
+    z-index: 0;
+    object-fit: scale-down;
+}
+
+#p_introduce1
+{
+    font-size: 28px;
+    color: #b9b9b9; 
+    text-align: right;
+}
+
+#p_introduce2
+{
+    font-size: 28px;
+    color: red; 
+}
+
+#p_introduce3
+{
+    font-size: 28px;
+}
+
+#heart
+{
+    height: 50px; 
+    width: 50px;
+}
+
+#btn-black
+{
+    font-size: 20px; 
+    width: 100%;
+
+}
+
+.custom-radio-button {
+    display: inline-block;
+    background-color: #968872; /* 按鈕的背景顏色 */
+    color: #f9f9f9; /* 文本顏色 */
+    padding: 5px 20px;
+    border-radius: 5px; /* 圓角邊框 */
+    margin-left: 50px;
+    cursor: pointer; /* 添加手型游標以表明它是可單擊的 */
+}
+
+.custom-radio-button input[type="radio"] {
+    display: none; /* 隱藏原始的單選按鈕 */
+}
+
+.radio-button-label {
+    pointer-events: none; /* 使文字不能被點擊 */
+}
+
+.custom-radio-button input[type="radio"]:checked + .radio-button-label {
+    color: #302d2d;
+    font-weight: bold;
+}
+
+
+#number {
+    border: solid 1px;
+    border-radius: 25px; /* 使外框變成横向橢圓 */
+    color: white;
+    border-color: black;
+    background-color: black;
+    opacity: 0.4;
+    padding: 10px 20px; /* 調整 padding 屬性，增加上下間距 */
+    position: absolute; /* 使用絕對定位 */
+    bottom: 10px; /* 距離底部 10px */
+    left: 10px; /* 距離左邊 10px */
+}
+
+
+
+button
+{
+    font-size: 20px;
+    padding: 10px; 
+    background-color: #f9f9f9;
+}
+
+ul
+{
+    color: brown;
+    font-size: 20px;
+}
+
+li
+{
+    padding-top: 20px;
+}
+hr
+{
+    max-width: 100%;
+}
+#hr1
+{
+    margin-top: 50px;
+}
+.image {
+    max-width: 100%; /* 圖像寬度不超過其容器 */
+    height: auto; /* 保持圖像縱橫比 */
+    display: block; /* 確保圖像不會因文本基線而對齊 */
+    margin: 10px auto; /* 垂直居中並設置圖像之間的垂直間距 */
+    text-align: center; /* 水平居中圖像 */
+    margin-top: 10px;
+}
+
+#back 
+{
+    position: fixed;
+    bottom: 100px;
+    left: 60px;
+    transition: transform 0.3s ease;
+    z-index: 0;
+}
+#back:hover 
+{
+    transform: translateY(-10px);
+}
+.header_lower 
+{
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.vertical-scroll-menu 
+{
+    max-height: 200px;
+    overflow-y: auto; 
+}
+
+#atlogo
+{ 
+    font-size: 30px;
+    white-space: nowrap;
+
+}
+#surfing
+{
+    padding-top: 10px;
+}

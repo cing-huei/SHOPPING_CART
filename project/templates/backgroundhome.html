@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理面板</title>
+    {% comment %} 引入 Bootstrap 樣式表  {% endcomment %}
+    <link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        *
+        {
+            margin: 0px;
+            padding: 0px;
+            width: auto;
+        }
+        #top-1
+        {
+            position: relative;
+            height: 70px;
+            background-color: #f9f9f9;
+            z-index: 4;
+        }
+        #sign_in
+        {
+            font-size: 15px;
+            margin-right: 25px;
+            height: auto;
+            margin-top: 10px;
+            color: #000; /* 將文字顏色設為黑色 */
+            text-decoration: none; /* 去除底線 */
+        }
+        #member
+        {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+        table, th ,td{
+            border: 1px solid;
+            border-collapse: collapse;
+        }
+        table{
+            margin-left: auto;
+            margin-right: auto;
+            margin-top:50px;
+            text-align: center;
+        }
+        th {
+            font-size: 24px; 
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-rgb(255, 255, 235) navbar-expand-md" id="top-1">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-end align-items-center d-md-inline d-none"></div>
+            <div class="d-flex justify-content-center align-items-center">
+                <p id="cart_text" class="d-md-inline">
+                    <div>
+                        {% if request.user.is_authenticated %}
+                            <div>
+                                <a href="/adminlogout/" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" />{{ user.username }} / 登出
+                                </a>
+                            </div>
+                        {% else %}
+                            <div>
+                                <a href="/adminlogin/" id="sign_in">
+                                    <img src="{% static './images/member4_0.png' %}" id="member" />登入
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="dropdown" id="top-2" style="margin-left: 10px; margin-right: 80px;">
+                        <a class="btn btn-second btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            功能
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="/managementlist/">權限管理</a>
+                            <a class="dropdown-item" href="/listall/">會員管理</a>
+                            <a class="dropdown-item" href="#">商品管理</a>
+                            <a class="dropdown-item" href="/orders/">收件管理</a>
+                            <a class="dropdown-item" href="/ordertable/">商品訂單</a>
+                            <a class="dropdown-item" href="/inventorysheet/">庫存查詢</a>
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form action="/your-backend-endpoint" method="post">
+            <table class="table table-danger table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>商品</th>
+                        <th>人員管理</th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="table">
+                    <tr>
+                        <td>
+                            <img src="{% static './images/list.png' %}" id="member2" />
+                            <a href="/ordertable/" class="btn btn-lg btn-danger "type="submit">商品訂單</a>
+                        </td>
+                        <td>
+                            <img src="{% static './images/user.png' %}" id="member2" />
+                            <a href="/listall/" class="btn btn-lg btn-primary"type="submit">會員管理  </a>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="{% static './images/box.png' %}" id="member2" />
+                            <a href="#" class="btn btn-lg btn-success"type="submit">商品管理</a>
+                        </td>
+                        <td>
+                            <img src="{% static './images/manage.png' %}" id="member2" />
+                            <a href="/managementlist/" class="btn btn-lg btn-warning"type="submit">權限管理</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="{% static './images/cangku.png' %}" id="member2" />
+                            <a href="/inventorysheet/" class="btn btn-lg btn-warning"type="submit">庫存查詢</a>
+                        </td>
+                        <td>
+                            <img src="{% static './images/poster.png' %}" id="member2" />
+                            <a href="/orders/" class="btn btn-lg btn-success"type="submit">收件管理</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

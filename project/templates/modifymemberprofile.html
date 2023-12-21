@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>修改資料</title>
+    <link rel="stylesheet" href="{% static 'modifymemberprofile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>修改資料</b></h1>
+        <a href="/subject/" class="navbar-brand" style="margin-right: 20px;"><h4><b>回首頁</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/modifymemberprofile/{{ update.id }}/" method="POST" class="table">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>顧客資訊</th>
+            </tr>
+            <tr>
+                <th>&nbsp;&nbsp;姓名</th>
+                <td>
+                    <input disabled type="text" id="Username" name="Username" value="{{ update.Username }}" class="form-control disabled" required>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>性別</th>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="form-check" style="margin-right: 20px;">
+                            <input type="radio" id="Usersex-M" name="Usersex" value="M" {% if update.Usersex == "M" %}checked{% endif %} class="form-check-input">
+                            <label for="Usersex-M" class="form-check-label">男</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" id="Usersex-F" name="Usersex" value="F" {% if update.Usersex == "F" %}checked{% endif %} class="form-check-input">
+                            <label for="Usersex-F" class="form-check-label">女</label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>&nbsp;&nbsp;密碼</th>
+                <td>
+                    <input  disabled type="password" id="Passwd" name="Passwd" value="{{ update.Passwd }}" class="form-control" required >
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>生日</th>
+                <td>
+                    <input type="date" id="Userbirthday" name="Userbirthday" value="{{ update.Userbirthday|date:'Y-m-d' }}" class="form-control" required>
+                </td>
+            </tr>
+            <tr>
+                <th>&nbsp;&nbsp;信箱</th>
+                <td>
+                    <input disabled type="email" id="Usermail" name="Usermail" value="{{ update.Usermail }}" class="form-control disabled" required>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>手機</th>
+                <td>
+                    <input type="tel" id="Usertel" name="Usertel" pattern="[09]{2}[0-9]{8}" placeholder="09xxxxxxxx" value="{{ update.Usertel }}" class="form-control" required>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>地址</th>
+                <td>
+                    <input type="text" id="Useraddress" name="Useraddress" value="{{ update.Useraddress }}" class="form-control" required>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input type="submit" name="button" id="button" value="修改" class="btn btn-primary btn-lg custom-margin">
+                    <input type="reset" name="button2" id="button2" value="恢復" class="btn btn-danger btn-lg">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

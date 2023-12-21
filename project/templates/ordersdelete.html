@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>刪除收件管理</title>
+    <link rel="stylesheet" href="{% static './ordersdelete.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>收件管理-刪除資料</b></h1>
+        <a href="/orders/" class="navbar-brand" style="margin-right: 20px;"><h4><b>返回</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/ordersdelete/{{ dict_data.id }}/" method="POST">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>收件者資訊</th>
+            </tr>
+            <tr>
+                <th>會員姓名</th>
+                <td>{{ dict_data.customemail.Username }}</td>
+            </tr>
+            <tr>
+                <th>收件者姓名</th>
+                <td>{{ dict_data.customname }}</td>
+            </tr>
+            <tr>
+                <th>收件者手機</th>
+                <td>{{ dict_data.customphone }}</td>
+            </tr>
+            <tr>
+                <th>信箱</th>
+                <td>{{ dict_data.customemail.Usermail }}</td>
+            </tr>
+            <tr>
+                <th>商品金額</th>
+                <td>{{ dict_data.subtotal }}</td>
+            </tr>
+            <tr>
+                <th>運費</th>
+                <td>{{ dict_data.shipping }}</td>
+            </tr>
+            <tr>
+                <th>總金額</th>
+                <td>{{ dict_data.grandtotal }}</td>
+            </tr>
+            <tr>
+                <th>物流</th>
+                <td>{{ dict_data.shipping_method }}</td>
+            </tr>
+            <tr>
+                <th>收件者地址</th>
+                <td>{{ dict_data.customaddress }}</td>
+            </tr>
+            <tr>
+                <th>付款方式</th>
+                <td>{{ dict_data.paytype }}</td>
+            </tr>
+            <tr>
+                <th>黑名單</th>
+                <td>
+                    {% if dict_data.customemail.Isblacklisted %}
+                        是
+                    {% else %}
+                        否
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button onclick="return doublecheck();" class="btn btn-danger btn-lg custom-margin" name="button">刪除</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="{% static 'js/doublecheck_delete.js' %}"></script>
+{% endblock %}

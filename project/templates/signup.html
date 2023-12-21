@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊 Encounter U 服飾會員</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static './css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './signup.css' %}">
+    <script>
+        // 頁面載入
+        $(document).ready(function(){
+            $("#btn-email").click(function(){
+                console.log("按了驗證信箱按鈕");
+                var email = $("#mail").val();
+                $.ajax({
+                    url: '/check_email/',
+                    method: 'POST',
+                    data: { 'email': email },
+                    success: function(data) {
+                        console.log('email:', data.email);
+                        if (data.email != '') {
+                            // 信箱已註冊，顯示確認框
+                            var confirmation = confirm('此信箱已註冊過，請輸入別的信箱！');
+                            if (!confirmation) {
+                              
+                            }
+                        } else {
+                            // 信箱可用，顯示確認框
+                            var confirmation = confirm('可使用此信箱進行註冊');
+                            if (confirmation) {
+                       
+                            } 
+                        }
+                    },
+                    error: function(error) {
+                        console.log('錯誤');
+                    }
+                });
+            });
+            $("#btn1").click(function(){
+                console.log("按了註冊按鈕");
+                var email = $("#mail").val();
+                $.ajax({
+                    url: '/check_email/',
+                    method: 'POST',
+                    data: { 'email': email },
+                    success: function(data) {
+                        console.log('email:', data.email);
+                        if (data.email != '') {
+                            // 信箱已註冊，顯示確認框
+                            var confirmation = confirm('此信箱已註冊過，請輸入別的信箱！');
+                            if (!confirmation) {
+                              
+                            }
+                        } 
+                    },
+                    error: function(error) {
+                        console.log('錯誤');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div  class="container-fluild"  id="outer" align="center">
+        <div class="col col-md-6 col-lg-4" >
+            <strong><p>註冊 Encounter U 服飾會員</p></strong>
+        </div>
+    </div>
+    <div class="container" align="center" id="table" >
+        <div class="row justify-content-center align-items-center">  
+            <div class="col col-md-6 col-lg-4">
+                <div class="contentbox">
+                    <div id="logo">
+                        <img src="{% static './images/LOGO_log.jpg' %}">
+                    </div>
+                    <div class="container">
+                        <form action="/signup/" method="post">
+                            {% csrf_token %}
+                            <div class="form-group my-1">
+                                <label class="form-label" for="user-name"><span>*</span>姓名</label>
+                                <input type="text" name="user-name" id="name" class="form-control mb-3" required/>
+                            </div>
+                            <div class="container-fluild " id="radio_sex">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span>*</span>性別
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="radio" name="user-sex" value="M" id="sex" required/>男
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="radio" name="user-sex" value="F" id="sex" required/>女
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
+                            </div>
+                            <div class="form-group my-3">
+                                <label class="form-label" for="user-birthday"><span>*</span>生日</label>
+                                <input type="date" name="user-birthday" id="birthday" class="form-control" required/>
+                            </div>
+                            <div class="form-group my-3">
+                                <label class="form-label" for="user-tel"><span>*</span>手機</label>
+                                <input type="tel" name="user-tel" pattern="[09]{2}[0-9]{8}" placeholder="09xxxxxxxx" class="form-control" required/>
+                            </div>
+                            <div class="form-group" id="testmailgroup">
+                                <div class="row align-items-center">
+                                    <div class="col-3" style="font-size: large; padding-right: 30px;">
+                                        <span>*</span>信箱
+                                    </div>
+                                    <div class="col-5" id="email-status"></div>
+                                    <div class="col-4">
+                                        <button class="btn btn-primary" id="btn-email">驗證信箱</button>
+                                    </div>
+                                </div>
+                                <input type="email" name="user-mail" id="mail" class="form-control my-2" placeholder="abc@example.com" required/>
+                            </div>
+                            <div class="form-group my-3">
+                                <label class="form-label" for="pass-wd"><span>*</span>密碼</label>
+                                <input type="password" name="pass-wd" id="pass-wd" class="form-control" required/>
+                            </div>
+                            <div class="form-group my-2">
+                                <label class="form-label " for="user-address"><span>*</span>地址</label>
+                                <input type="text" name="user-address" id="address" class="form-control " required/>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-start my-4">
+                                <div class="w-100">
+                                    <button type="submit" id="btn1" class="btn btn-outline-primary w-100">註冊</button>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <p>已經是會員了？<a href="{% url 'login' %}">登入</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static './js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

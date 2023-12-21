@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    <title>編輯收件管理</title>
+    <link rel="stylesheet" href="{% static 'ordersedit.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>收件管理-編輯資料</b></h1>
+        <a href="/orders/" class="navbar-brand" style="margin-right: 20px;"><h4><b>返回</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/ordersedit/{{ update.id }}/" method="POST" class="table">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>收件者資訊</th>
+            </tr>
+            <tr>
+                <th><span>*</span>收件者姓名</th>
+                <td><input type="text" id="customname" name="customname" class="form-control" required placeholder="請輸入收件者姓名" value="{{ update.customname }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>收件者手機</th>
+                <td>
+                    <input type="tel" id="customphone" name="customphone" pattern="[09]{2}[0-9]{8}" placeholder="09xxxxxxxx" value="{{ update.customphone }}" class="form-control" required>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>商品金額</th>
+                <td><input type="number" id="subtotal" name="subtotal" class="form-control" required placeholder="請輸入商品金額" value="{{ update.subtotal }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>運費</th>
+                <td><input type="number" id="shipping" name="shipping" class="form-control" required placeholder="請輸入運費" value="{{ update.shipping }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>總金額</th>
+                <td><input type="number" id="grandtotal" name="grandtotal" class="form-control" required placeholder="請輸入總金額" value="{{ update.grandtotal }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>物流</th>
+                <td><input type="text" id="shipping_method" name="shipping_method" class="form-control" required placeholder="請輸入物流" value="{{ update.shipping_method }}"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>收件者地址</th>
+                <td>
+                    <input type="text" id="customaddress" name="customaddress" placeholder="請輸入收件者地址" value="{{ update.customaddress }}" class="form-control" required>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>付款方式</th>
+                <td><input type="text" id="paytype" name="paytype" class="form-control" required placeholder="請輸入付款方式" value="{{ update.paytype }}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <input type="submit" name="button" id="button" value="修改" class="btn btn-primary btn-lg custom-margin">
+                    <input type="reset" name="button2" id="button2" value="恢復" class="btn btn-danger btn-lg">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

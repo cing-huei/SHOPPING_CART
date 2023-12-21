@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% load static %}
+    <title>新增資料</title> 
+    <link rel="stylesheet" href="{% static './createdata.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>會員管理-新增資料</b></h1>
+        <a href="/listall/" class="navbar-brand" style="margin-right: 20px;"><h4><b>返回</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/createdata/" method="POST" class="table">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>會員資訊</th>
+            </tr>
+            <tr>
+                <th><span>*</span>姓名</th>
+                <td><input type="text" id="user-name" name="user-name" class="form-control" required placeholder="請輸入姓名"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>性別</th>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="form-check" style="margin-right: 20px;">
+                            <input type="radio" id="user-sex-m" name="user-sex" value="M" checked class="form-check-input">
+                            <label for="user-sex-m" class="form-check-label">男</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" id="user-sex-f" name="user-sex" value="F" class="form-check-input">
+                            <label for="user-sex-f" class="form-check-label">女</label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th><span>*</span>生日</th>
+                <td><input type="date" id="user-birthday" name="user-birthday" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th><span>*</span>手機</th>
+                <td><input type="text" id="user-tel" name="user-tel" class="form-control" pattern="[09]{2}[0-9]{8}" placeholder="09xxxxxxxx" required></td>
+            </tr>
+            <tr>
+                <th><span>*</span>信箱</th>
+                <td><input type="email" id="user-mail" name="user-mail" class="form-control" required placeholder="請輸入信箱如@gmail.com"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>密碼</th>
+                <td><input type="password" id="pass-wd" name="pass-wd" class="form-control" required placeholder="請輸入密碼"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>地址</th>
+                <td><input type="text" id="user-address" name="user-address" class="form-control" required></td>
+            </tr>
+            <tr>
+                <th><span>*</span>黑名單</th>
+                <td><input type="number" id="Isblacklisted" name="Isblacklisted" class="form-control" required placeholder="請輸入0或1(0為否，1為是)" min="0" max="1"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary btn-lg custom-margin" name="button" id="button">儲存</button>
+                    <button type="reset" class="btn btn-danger btn-lg" name="button2" id="button2">清除</button>
+                </td>
+            </tr>
+            
+            
+            
+        </table>
+    </form>
+</div>
+{% endblock %}

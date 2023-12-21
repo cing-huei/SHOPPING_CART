@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% load static %}
+    <title>新增權限管理</title> 
+    <link rel="stylesheet" href="{% static './managementcreatedata.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-light" >
+    <div class="container">
+        <h1 class="title mx-auto"><b>權限管理-新增資料</b></h1>
+        <a href="/managementlist/" class="navbar-brand" style="margin-right: 20px;"><h4><b>返回</b></h4></a>
+    </div>
+</nav>
+<div class="container">
+    <form action="/managementcreatedata/" method="POST" class="table">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <tr id="tabletop">
+                <th>欄位</th>
+                <th>管理者資訊</th>
+            </tr>
+            <tr>
+                <th><span>*</span>管理者帳號</th>
+                <td><input type="text" id="username" name="username" class="form-control" required placeholder="請輸入管理者帳號"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>管理者密碼</th>
+                <td><input type="password" id="password" name="password" class="form-control" required placeholder="請輸入管理者密碼"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>信箱</th>
+                <td><input type="email" id="email" name="email" class="form-control" required placeholder="請輸入信箱如@gmail.com"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>姓氏</th>
+                <td><input type="text" id="first_name" name="first_name" class="form-control" required placeholder="請輸入姓氏"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>名字</th>
+                <td><input type="text" id="last_name" name="last_name" class="form-control" required placeholder="請輸入名字"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>超級使用者</th>
+                <td><input type="number" id="is_superuser" name="is_superuser" class="form-control" required placeholder="請輸入0或1(0為否，1為是)" min="0" max="1"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>工作人員</th>
+                <td><input type="number" id="is_staff" name="is_staff" class="form-control" required placeholder="請輸入0或1(0為否，1為是)" min="0" max="1"></td>
+            </tr>
+            <tr>
+                <th><span>*</span>有效</th>
+                <td><input type="number" id="is_active" name="is_active" class="form-control" required placeholder="請輸入0或1(0為否，1為是)" min="0" max="1"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary btn-lg custom-margin" name="button" id="button">儲存</button>
+                    <button type="reset" class="btn btn-danger btn-lg" name="button2" id="button2">清除</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
